@@ -17,7 +17,7 @@ const router = createRouter({
       component: ListView,
       props: (route) => ({ 
         page: parseInt(route.query.page?.toString() || '1'),
-        pageSize: parseInt(route.query.pageSize?.toString() || '2')
+        pageSize: parseInt(route.query.pageSize?.toString() || '100')
       })
     },
     {

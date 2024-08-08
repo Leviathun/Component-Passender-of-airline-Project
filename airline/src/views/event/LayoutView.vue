@@ -6,16 +6,17 @@ import { useRouter } from 'vue-router'
 
 const event = ref<Passen | null>(null)
 const props = defineProps ({
-    _id: {
+    id: {
         type: String,
         required: true
     }
 })
 const router = useRouter ()
 onMounted (() => {
-    PassService.getEvent(parseInt(props._id))
+    PassService.getEvent(props.id)
         .then((response) => {
             event.value = response.data
+            console.log(event.value)
         })
         .catch((error) => {
             if (error.respose && error.response.status === 404) {
@@ -31,11 +32,11 @@ onMounted (() => {
 </script>
 <template>
     <div v-if="event">
-        <h1>{{ event.name }}</h1>
+        
         <nav>
-            <RouterLink :to="{ name: 'event-detail-view' }">Details</RouterLink>
+            <RouterLink :to="{ name: 'event-detail-view' ,params: { id: event._id } }">Details</RouterLink>
             |
-            <RouterLink :to="{ name: 'event-register-view' }">Register</RouterLink>
+            <RouterLink :to="{ name: 'event-airline-view' ,params: { id: event._id } }">Airline</RouterLink>
             
         </nav>
         <RouterView :event="event" />

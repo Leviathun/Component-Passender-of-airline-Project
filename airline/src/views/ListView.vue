@@ -13,8 +13,8 @@
 
   const props = defineProps ({
     page: {
-     type: Number,
-     required: true
+      type: Number,
+      required: true
    },
     pageSize: {
       type: Number,
@@ -23,14 +23,15 @@
 })
 
 const pageSize = ref(props.pageSize);
-
 const page = computed (() => props.page)
+
   onMounted (() => {
     watchEffect(() => {
       events.value = null
       PassService.getEvents(pageSize.value, page.value)
         .then((response) => {
-          events.value = response.data
+          events.value = response.data.data.slice(0, 10);
+          console.log(events.value)
           totalEvents.value = parseInt(response.headers['x-total-count']);
         })
         .catch((error) => {
@@ -77,9 +78,9 @@ const page = computed (() => props.page)
   <div class="page-size">
       <label for="page-size">Events per page:</label>
       <select id="page-size" v-model="pageSize" @change="updatePageSize(pageSize)">
-        <option :value="2">2</option>
-        <option :value="5">5</option>
-        <option :value="10">10</option>
+        <option :value="100">100</option>
+        <option :value="500">500</option>
+        <option :value="1000">1000</option>
       </select>
     </div>
 </template>
