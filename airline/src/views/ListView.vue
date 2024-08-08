@@ -30,12 +30,18 @@ const page = computed (() => props.page)
       events.value = null
       PassService.getEvents(pageSize.value, page.value)
         .then((response) => {
+        if (!response || response.data.length === 0) {
+          // Handle no data found or empty response
+          router.push({ name: 'not-found' });
+          return;
+        }
           events.value = response.data.data.slice(0, 10);
           console.log(events.value)
           totalEvents.value = parseInt(response.headers['x-total-count']);
         })
         .catch((error) => {
           console.error('There was an error!', error)
+          router.push ({ name: 'not-found' })
         })
     })
   })

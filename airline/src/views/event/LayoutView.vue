@@ -14,20 +14,26 @@ const props = defineProps ({
 const router = useRouter ()
 onMounted (() => {
     PassService.getEvent(props.id)
-        .then((response) => {
-            event.value = response.data
-            console.log(event.value)
-        })
-        .catch((error) => {
-            if (error.respose && error.response.status === 404) {
+    .then((response) => {
+        if (!response || response.data.length === 0) {
+          // Handle no data found or empty response
+          router.push({ name: 'not-found' });
+          return;
+        } else {
+           event.value = response.data
+           console.log(event.value) 
+        }
+    })
+    .catch((error) => {
+        if (error.respose && error.response.status === 404) {
             router.push ({
                 name: '404-resource-view',
                 params: { resource: 'event' }
             })
-            } else {
-                router.push ({ name: 'not-found' })
-            }
-        })
+        } else {
+            router.push ({ name: 'not-found' })
+        }
+    })
 })
 </script>
 <template>
