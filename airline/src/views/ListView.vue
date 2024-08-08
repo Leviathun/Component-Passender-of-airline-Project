@@ -54,7 +54,7 @@ const page = computed (() => props.page)
   <h1>Passenger List</h1>
   <!-- new element -->
   <div class="events">
-    <EventCard v-for="event in events" :key="event._id" :event="event"/>
+    <PassCard v-for="event in events" :key="event._id" :event="event"/>
   
     <div class="pagination">
     <RouterLink
