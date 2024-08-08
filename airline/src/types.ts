@@ -17,3 +17,7 @@ export interface Passen {
     ],
     
 }
+
+export interface MessageState{
+    message: string
+}
