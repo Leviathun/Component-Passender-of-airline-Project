@@ -8,6 +8,7 @@ import LayoutView from '@/views/event/LayoutView.vue'
 
 import PageNotFoundView from '@/views/PageNotFound.vue'
 import ResourceNotFound from '@/views/ResourceNotFound.vue'
+import nProgress from 'nprogress'
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -57,6 +58,13 @@ const router = createRouter({
       component: PageNotFoundView 
     },
   ]
+})
+router.beforeEach (() => {
+  nProgress.start()
+})
+  
+router.afterEach ( () => {
+  nProgress.done()
 })
 
 export default router
