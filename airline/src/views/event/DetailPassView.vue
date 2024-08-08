@@ -11,8 +11,8 @@ const { event } = toRefs(props)
 </script>
 
 <template>
-    <h1>{{ event.name }}</h1>
-    <p> trips : {{ event.trips }}</p>
-    <h3>{{ event.airline }}</h3>
+    
+    <p>Trips: {{ event.trips }}</p>
+    
     
 </template>

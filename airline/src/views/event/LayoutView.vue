@@ -32,7 +32,7 @@ onMounted (() => {
 </script>
 <template>
     <div v-if="event">
-        
+        <h1>{{ event.name }}</h1>
         <nav>
             <RouterLink :to="{ name: 'event-detail-view' ,params: { id: event._id } }">Details</RouterLink>
             |

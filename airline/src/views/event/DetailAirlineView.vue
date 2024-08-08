@@ -11,8 +11,14 @@ const { event } = toRefs(props)
 </script>
 
 <template>
-    <h1>{{ event.name }}</h1>
-    <p> trips : {{ event.trips }}</p>
-    <h3>{{ event.airline }}</h3>
+    <div v-for="airline in event.airline" :key="airline._id">
+        <h3>Airline: {{ airline.name }}</h3>
+        <img :src="airline.logo" alt="Airline Logo" />
+        <p>Country: {{ airline.country }}</p>
+        <p>Slogan: {{ airline.slogan }}</p>
+        <p>Headquarters: {{ airline.head_quaters }}</p>
+        <p>Website: <a :href="'https://' + airline.website" target="_blank">{{ airline.website }}</a></p>
+        <p>Established: {{ airline.established }}</p>
+    </div>
     
 </template>
