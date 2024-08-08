@@ -21,3 +21,7 @@ export interface Passen {
 export interface MessageState{
     message: string
 }
+
+export interface EventState {
+    event: Passen | null
+}

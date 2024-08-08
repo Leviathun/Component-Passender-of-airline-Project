@@ -9,6 +9,8 @@ import LayoutView from '@/views/event/LayoutView.vue'
 import PageNotFoundView from '@/views/PageNotFound.vue'
 import ResourceNotFound from '@/views/ResourceNotFound.vue'
 import nProgress from 'nprogress'
+import PassService from '@/services/PassService'
+import { useEventStore } from '@/stores/event'
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -26,6 +28,26 @@ const router = createRouter({
       name: 'event-layout-view',
       component: LayoutView,
       props: true,
+      beforeEnter: (to) => {
+        // put API call here
+        const id = (to.params.id as string)
+        const eventStore = useEventStore()
+        return PassService.getEvent(id)
+        .then ((response) => {
+          // need to setup the data for the event
+          eventStore.setEvent(response.data)
+        }) 
+        .catch((error) => {
+          if (error.response && error.response.status === 404) {
+            return {
+              name: '404-resource-view',
+              params: { resource: 'event' }
+            }
+          } else{
+            return { name: 'not-found' }
+          }
+        })
+      },
       children: [
         {
           path: '',

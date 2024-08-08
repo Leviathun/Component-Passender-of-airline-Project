@@ -1,40 +1,10 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
-import { type Passen } from '@/types'
-import PassService from '@/services/PassService'
-import { useRouter } from 'vue-router'
+import { useEventStore } from '@/stores/event'
+import { storeToRefs } from 'pinia'
 
-const event = ref<Passen | null>(null)
-const props = defineProps ({
-    id: {
-        type: String,
-        required: true
-    }
-})
-const router = useRouter ()
-onMounted (() => {
-    PassService.getEvent(props.id)
-    .then((response) => {
-        if (!response || response.data.length === 0) {
-          // Handle no data found or empty response
-          router.push({ name: 'not-found' });
-          return;
-        } else {
-           event.value = response.data
-           console.log(event.value) 
-        }
-    })
-    .catch((error) => {
-        if (error.respose && error.response.status === 404) {
-            router.push ({
-                name: '404-resource-view',
-                params: { resource: 'event' }
-            })
-        } else {
-            router.push ({ name: 'not-found' })
-        }
-    })
-})
+const store = useEventStore ()
+const { event } = storeToRefs (store)
+
 </script>
 <template>
     <div v-if="event">
