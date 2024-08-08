@@ -1,14 +1,14 @@
 <script setup lang="ts">
-  import EventCard from '@/components/EventCard.vue';
-  import { type Event } from '@/types'
+  import PassCard from '@/components/PassCard.vue';
+  import { type Passen } from '@/types'
   import { ref , onMounted, computed, watchEffect } from 'vue'
-  import EventService from '@/services/EventService';
+  import PassService from '@/services/PassService';
   import { useRoute, useRouter } from 'vue-router';
 
   const route = useRoute();
   const router = useRouter();
 
-  const events = ref<Event[] | null>(null)
+  const events = ref<Passen[] | null>(null)
   const totalEvents = ref(0)
 
   const props = defineProps ({
@@ -16,7 +16,7 @@
      type: Number,
      required: true
    },
-   pageSize: {
+    pageSize: {
       type: Number,
       required: true
     }
@@ -28,7 +28,7 @@ const page = computed (() => props.page)
   onMounted (() => {
     watchEffect(() => {
       events.value = null
-      EventService.getEvents(pageSize.value, page.value)
+      PassService.getEvents(pageSize.value, page.value)
         .then((response) => {
           events.value = response.data
           totalEvents.value = parseInt(response.headers['x-total-count']);
@@ -51,10 +51,10 @@ const page = computed (() => props.page)
 </script>
 
 <template>
-  <h1>Event For Good</h1>
+  <h1>Passenger List</h1>
   <!-- new element -->
   <div class="events">
-    <EventCard v-for="event in events" :key="event.id" :event="event"/>
+    <EventCard v-for="event in events" :key="event._id" :event="event"/>
   
     <div class="pagination">
     <RouterLink
