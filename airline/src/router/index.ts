@@ -1,22 +1,61 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import HomeView from '../views/HomeView.vue'
+import ListView from '@/views/ListView.vue'
+import AboutView from '@/views/AboutView.vue'
 
+import DetailAirlineView from '@/views/event/DetailAirlineView.vue'
+import DetailPassView from '@/views/event/DetailPassView.vue'
+import LayoutView from '@/views/event/LayoutView.vue'
+
+import PageNotFoundView from '@/views/PageNotFound.vue'
+import ResourceNotFound from '@/views/ResourceNotFound.vue'
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
       path: '/',
-      name: 'home',
-      component: HomeView
+      name: 'event-list-view',
+      component: ListView,
+      props: (route) => ({ 
+        page: parseInt(route.query.page?.toString() || '1'),
+        pageSize: parseInt(route.query.pageSize?.toString() || '2')
+      })
+    },
+    {
+      path: '/event/:id',
+      name: 'event-layout-view',
+      component: LayoutView,
+      props: true,
+      children: [
+        {
+          path: '',
+          name: 'event-detail-view',
+          component: DetailPassView,
+          props: true
+        },
+        {
+          path: 'airline',
+          name: 'event-airline-view',
+          component: DetailAirlineView,
+          props: true
+        }
+      ]
     },
     {
       path: '/about',
       name: 'about',
-      // route level code-splitting
-      // this generates a separate chunk (About.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
-      component: () => import('../views/AboutView.vue')
-    }
+      component: AboutView
+    },
+    {
+      path: '/404/:resource',
+      name: '404-resource-view',
+      component: PageNotFoundView,
+      props: true
+    },
+    {
+      path: '/:catchAll(.*)',
+      name: 'not-found',
+      component: ResourceNotFound
+    },
   ]
 })
 
